@@ -1,0 +1,1 @@
+ALTER TABLE model ADD CONSTRAINT model_auto_fk foreign key (model_auto_id) references auto(auto_ID) on delete CASCADE

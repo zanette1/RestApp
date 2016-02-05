@@ -1,0 +1,4 @@
+CREATE TABLE CATEGORY(
+category_ID int AUTO_INCREMENT PRIMARY KEY,
+name varchar(300) NOT NULL,
+parent_ID int DEFAULT NULL);

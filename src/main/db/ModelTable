@@ -1,0 +1,5 @@
+CREATE TABLE model (
+model_ID int AUTO_INCREMENT PRIMARY KEY,
+model_nazwa varchar(300) NOT NULL,
+model_auto_id int
+)
