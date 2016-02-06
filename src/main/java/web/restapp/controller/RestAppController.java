@@ -22,7 +22,7 @@ public class RestAppController {
 			System.out.println("User with id " + id +" not found");
 			return new ResponseEntity<Products>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<Products>(HttpStatus.OK);
+		return new ResponseEntity<Products>(product, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/products/", method=RequestMethod.GET)
@@ -32,17 +32,17 @@ public class RestAppController {
 			System.out.println("No items to view");
 			return new ResponseEntity<List<Products>>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<List<Products>>(HttpStatus.OK);
+		return new ResponseEntity<List<Products>>(products, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/insert-product/", method=RequestMethod.POST)
-	public ResponseEntity<Void> insertProduct(@RequestBody Products product) {
+	public ResponseEntity<Products> insertProduct(@RequestBody Products product) {
 		if(productsService.isProductExist(product)) {
 			System.out.println("The product already exist");
-			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+			return new ResponseEntity<Products>(HttpStatus.CONFLICT);
 		}
 		productsService.addProduct(product);
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		return new ResponseEntity<Products>(product, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value="/delete-product/{id}", method=RequestMethod.DELETE)
@@ -57,17 +57,17 @@ public class RestAppController {
 	}
 	
 	@RequestMapping(value="/update-product/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<Void> editProduct(@PathVariable("id") int id, @RequestBody Products product) {
+	public ResponseEntity<Products> editProduct(@PathVariable("id") int id, @RequestBody Products product) {
 		Products currentProduct = productsService.findById(id);
 		if(currentProduct == null) {
 			System.out.println("The product doesn't exist");
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Products>(HttpStatus.NOT_FOUND);
 		}
 		
 		currentProduct.setName(product.getName());
 		currentProduct.setProducts(product.getProducts());
 		productsService.updateProduct(currentProduct);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<Products>(currentProduct, HttpStatus.OK);
 		
 	}
 	
