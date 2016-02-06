@@ -1,0 +1,7 @@
+CREATE TABLE products (
+id int AUTO_INCREMENT PRIMARY KEY,
+name varchar(300) NOT NULL,
+parent_id int default NULL,
+CONSTRAINT products_fk FOREIGN KEY (parent_id) REFERENCES products (id)
+ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
