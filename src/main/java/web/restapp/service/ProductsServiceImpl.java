@@ -52,7 +52,6 @@ public class ProductsServiceImpl implements ProductsService{
 		session = this.sessionFactory.getCurrentSession();
 		tx = session.beginTransaction();
 		Products product = (Products) this.session.get(Products.class, id);
-		tx.commit();
 		return product;
 	}
 	
@@ -61,6 +60,7 @@ public class ProductsServiceImpl implements ProductsService{
 		tx = session.beginTransaction();
 		Products productToUpdate = findById(product.getId());
 		productToUpdate.setName(product.getName());
+		session.update(productToUpdate);
 		tx.commit();
 	} 
 	
