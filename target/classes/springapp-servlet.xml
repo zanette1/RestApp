@@ -34,7 +34,6 @@ xsi:schemaLocation="
 		<property name="packagesToScan" value="web.restapp.model"/>
 		<property name="hibernateProperties">
 			<props>
-			 	<prop key="hibernate.current_session_context_class">thread</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop> 
@@ -47,14 +46,15 @@ xsi:schemaLocation="
 		</property>
 	</bean>
 	
-	
-	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	<bean id="productsService" class="web.restapp.service.ProductsServiceImpl" />
+	<tx:annotation-driven/>
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	
-	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 	
+	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="jacksonObjectMapper"/>
 		<property name="targetMethod" value="configure" />

@@ -15,7 +15,7 @@ public class RestAppController {
 	@Autowired
 	ProductsService productsService;
 	
-	@RequestMapping(value="/product/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/products/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Products> getProduct(@PathVariable("id") int id) {
 		Products product = productsService.findById(id);
 		if(product == null){
@@ -35,17 +35,34 @@ public class RestAppController {
 		return new ResponseEntity<List<Products>>(products, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/insert-product/", method=RequestMethod.POST)
+	@RequestMapping(value="/products/", method=RequestMethod.POST)
 	public ResponseEntity<Products> insertProduct(@RequestBody Products product) {
 		if(productsService.isProductExist(product)) {
 			System.out.println("The product already exist");
 			return new ResponseEntity<Products>(HttpStatus.CONFLICT);
 		}
+		
 		productsService.addProduct(product);
 		return new ResponseEntity<Products>(product, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value="/delete-product/{id}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/products/{id}", method=RequestMethod.POST)
+	public ResponseEntity<Products> insertSubProduct(@RequestBody Products product, @PathVariable("id") int id) {
+		Products productParent = productsService.findById(id);
+		if(productsService.isProductExist(product)) {
+			System.out.println("The product already exist");
+			return new ResponseEntity<Products>(HttpStatus.CONFLICT);
+		}
+		if(productParent == null) {
+			System.out.println("The upper category with id " + id + " doesn't exist");
+			return new ResponseEntity<Products>(HttpStatus.NOT_FOUND);
+		}
+		product.setProducts(productParent);
+		productsService.addProduct(product);
+		return new ResponseEntity<Products>(product, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="/products/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> removeProduct(@PathVariable("id") int id) {
 		Products product = productsService.findById(id);
 		if(product == null) {
@@ -56,7 +73,7 @@ public class RestAppController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/update-product/{id}", method=RequestMethod.PUT)
+	@RequestMapping(value="/products/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Products> editProduct(@PathVariable("id") int id, @RequestBody Products product) {
 		Products currentProduct = productsService.findById(id);
 		if(currentProduct == null) {
@@ -65,7 +82,6 @@ public class RestAppController {
 		}
 		
 		currentProduct.setName(product.getName());
-		currentProduct.setProducts(product.getProducts());
 		productsService.updateProduct(currentProduct);
 		return new ResponseEntity<Products>(currentProduct, HttpStatus.OK);
 		
