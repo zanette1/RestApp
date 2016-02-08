@@ -1,13 +1,24 @@
 package web.restapp.configuration;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -22,16 +33,23 @@ import web.restapp.service.ProductsServiceImpl;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@ComponentScan({"web.restapp"})
+@ComponentScan("web.restapp")
+@PropertySource(value = "file:C://Users/db/jdbc.properties")
 public class ConfigSpringApp {
-
+	
+	@Autowired
+	Environment env;
+	
 	@Bean
 	public DataSource configDataSource() {
+		
+		
 		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/restdb");
-		dataSource.setUsername("root");
-		dataSource.setPassword("wakacje1234");
+		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+		dataSource.setUrl(env.getProperty("jdbc.url"));
+		dataSource.setUsername(env.getProperty("jdbc.username"));
+		dataSource.setPassword(env.getProperty("jdbc.password"));
+		
 		return dataSource;
 	}
 	
