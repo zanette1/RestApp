@@ -12,15 +12,16 @@ import web.restapp.model.Products;
 @Transactional
 public class ProductsServiceImpl implements ProductsService{
 
+	@Autowired
 	private SessionFactory sessionFactory;
 	private Session session;
 	
 	
-	@Autowired
+	/*@Autowired
 	public ProductsServiceImpl(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-	
+	*/
 	public void addProduct(Products product) {
 		session = this.sessionFactory.getCurrentSession();
 		session.save(product);
