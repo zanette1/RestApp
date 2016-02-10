@@ -38,7 +38,10 @@ public class ProductsServiceImpl implements ProductsService{
 	
 	@SuppressWarnings("unchecked")
 	public List<Products> getProducts() {
+		//String hqlQuery = "FROM Products p LEFT JOIN fetch p.products order by p.products";
+		
 		session = this.sessionFactory.getCurrentSession();
+		//List<Products> list = session.createQuery("from Products p WHERE p.products is null").list();
 		List<Products> list = session.createQuery("from Products").list();
 		return list;
 	}

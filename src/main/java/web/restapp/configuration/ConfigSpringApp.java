@@ -1,24 +1,19 @@
 package web.restapp.configuration;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -28,6 +23,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import web.restapp.model.Products;
+import web.restapp.service.ProductsService;
 import web.restapp.service.ProductsServiceImpl;
 
 @Configuration
@@ -39,6 +35,9 @@ public class ConfigSpringApp {
 	
 	@Autowired
 	Environment env;
+	
+	@Autowired
+	ProductsService productsService;
 	
 	@Bean
 	public DataSource configDataSource() {
@@ -64,7 +63,7 @@ public class ConfigSpringApp {
 	}
 	
 	@Bean
-	public ProductsServiceImpl configProductsService() {
+	public ProductsService configProductsService() {
 		return new ProductsServiceImpl();
 	}
 	

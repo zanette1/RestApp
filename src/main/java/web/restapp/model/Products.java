@@ -18,6 +18,13 @@ public class Products implements Serializable{
 	@JoinColumn(name="parent_id")
 	private Products products;
 	
+	public Products() {}
+	public Products(int id, String name, Products products) {
+		this.id = id;
+		this.name = name;
+		this.products = products;
+	}
+	
 	public int getId() {
 		return id;
 	}

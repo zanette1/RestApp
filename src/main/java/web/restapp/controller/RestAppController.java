@@ -15,23 +15,26 @@ public class RestAppController {
 	@Autowired
 	ProductsService productsService;
 	
-	@RequestMapping(value="/products/{id}", method=RequestMethod.GET)
+	@RequestMapping(value="/products/{id}", method=RequestMethod.GET, produces="application/json")
 	public ResponseEntity<Products> getProduct(@PathVariable("id") int id) {
 		Products product = productsService.findById(id);
 		if(product == null){
 			System.out.println("User with id " + id +" not found");
 			return new ResponseEntity<Products>(HttpStatus.NOT_FOUND);
 		}
+		
 		return new ResponseEntity<Products>(product, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/products/", method=RequestMethod.GET)
 	public ResponseEntity<List<Products>> listProducts() {
 		List<Products> products = productsService.getProducts();
+		
 		if(products.isEmpty()) {
 			System.out.println("No items to view");
 			return new ResponseEntity<List<Products>>(HttpStatus.NOT_FOUND);
 		}
+		
 		return new ResponseEntity<List<Products>>(products, HttpStatus.OK);
 	}
 	
